@@ -28,8 +28,8 @@ public class TransactionDBHelper extends SQLiteOpenHelper {
                 TransactionsEntry.COLUMN_DAY        + " TEXT NOT NULL, "        +
                 TransactionsEntry.COLUMN_MONTH      + " TEXT NOT NULL, "        +
                 TransactionsEntry.COLUMN_YEAR       + " TEXT NOT NULL, "        +
-                TransactionsEntry.COLUMN_IMAGE      + " TEXT NOT NULL , "       +
-                TransactionsEntry.COLUMN_NOTES      + " TEXT NOT NULL);"        ;
+                TransactionsEntry.COLUMN_IMAGE      + " TEXT , "                +
+                TransactionsEntry.COLUMN_NOTES      + " TEXT );"                ;
         db.execSQL(CREATE_TABLE);
 
     }

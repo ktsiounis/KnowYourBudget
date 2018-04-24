@@ -1,6 +1,7 @@
 package ai.chainproof.theqteam.knowyourbudget.activities;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
+import ai.chainproof.theqteam.knowyourbudget.data.TransactionContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -106,6 +109,8 @@ public class NewTransactionActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         dateTextView.setText(sdf.format(myCalendar.getTime()));
+
+        Log.d("DAYCAL", "updateLabel: " + dateTextView.getText().toString().split("/")[0]);
     }
 
     private void dispatchTakePictureIntent() {
@@ -175,7 +180,24 @@ public class NewTransactionActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
-            finish();
+
+            ContentValues values = new ContentValues();
+
+            values.put(TransactionContract.TransactionsEntry.COLUMN_AMOUNT, amountEditText.getText().toString());
+            values.put(TransactionContract.TransactionsEntry.COLUMN_CATEGORY, spinner.getSelectedItem().toString());
+            values.put(TransactionContract.TransactionsEntry.COLUMN_IMAGE, mCurrentPhotoPath);
+            values.put(TransactionContract.TransactionsEntry.COLUMN_DAY, dateTextView.getText().toString().split("/")[0]);
+            values.put(TransactionContract.TransactionsEntry.COLUMN_MONTH, dateTextView.getText().toString().split("/")[1]);
+            values.put(TransactionContract.TransactionsEntry.COLUMN_YEAR, dateTextView.getText().toString().split("/")[2]);
+            values.put(TransactionContract.TransactionsEntry.COLUMN_NOTES, notesEditText.getText().toString());
+
+            Uri uri = getContentResolver().insert(TransactionContract.TransactionsEntry.CONTENT_URI, values);
+
+            if(uri != null){
+                Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
         }
 
         return super.onOptionsItemSelected(item);

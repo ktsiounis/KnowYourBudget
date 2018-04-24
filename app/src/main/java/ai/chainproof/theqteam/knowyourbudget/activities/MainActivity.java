@@ -1,6 +1,11 @@
 package ai.chainproof.theqteam.knowyourbudget.activities;
 
+import android.annotation.SuppressLint;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.support.v4.content.Loader;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,19 +13,22 @@ import android.support.v7.widget.Toolbar;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
 import ai.chainproof.theqteam.knowyourbudget.adapters.SectionsPagerAdapter;
+import ai.chainproof.theqteam.knowyourbudget.data.TransactionContract;
 import ai.chainproof.theqteam.knowyourbudget.fragments.MonthFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static final int TRANSACTIONS_LOADER_ID = 0;
 
     @BindView(R.id.tabs)
     public TabLayout tabs;
@@ -56,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getSupportLoaderManager().initLoader(TRANSACTIONS_LOADER_ID, null, MainActivity.this);
+
     }
 
 
@@ -81,4 +91,62 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            Cursor mTransactionsData = null;
+
+            // onStartLoading() is called when a loader first starts loading data
+            @Override
+            protected void onStartLoading() {
+                if (mTransactionsData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mTransactionsData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    Log.d("AsyncTaskLoader", "asynchronously load data.");
+                    return getContentResolver().query(TransactionContract.TransactionsEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null);
+
+                } catch (Exception e) {
+                    Log.e("AsyncTaskLoader", "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                mTransactionsData = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        data.moveToFirst();
+
+        Log.d("CATEGORY FROM DATABASE", "onLoadFinished: " + data.getString(data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_CATEGORY)));
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }
