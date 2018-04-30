@@ -49,6 +49,7 @@ public class MonthFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        transactions.clear();
         transactions.addAll(getArguments().<Transaction>getParcelableArrayList("transactions"));
         //Log.d("Fragment", "onCreateView: " + transactions.get(1).getCategory());
 

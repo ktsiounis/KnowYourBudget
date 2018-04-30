@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         setSupportActionBar(toolbar);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         tabs.setupWithViewPager(mViewPager);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         Bundle infoForFragment = new Bundle();
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         if(data.getCount()!=0){
 
