@@ -31,4 +31,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.7.0'
     implementation 'net.simonvt.schematic:schematic:0.7.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

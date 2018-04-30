@@ -1,6 +1,8 @@
 package ai.chainproof.theqteam.knowyourbudget.activities;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Intent;
@@ -17,6 +19,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+
+import java.util.ArrayList;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
 import ai.chainproof.theqteam.knowyourbudget.adapters.SectionsPagerAdapter;
@@ -65,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         getSupportLoaderManager().initLoader(TRANSACTIONS_LOADER_ID, null, MainActivity.this);
+
 
     }
 
@@ -149,4 +163,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
 }
