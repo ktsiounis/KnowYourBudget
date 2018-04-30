@@ -4,6 +4,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import java.util.ArrayList;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
+import ai.chainproof.theqteam.knowyourbudget.adapters.TransactionsRVAdapter;
+import ai.chainproof.theqteam.knowyourbudget.model.Transaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +37,10 @@ public class MonthFragment extends Fragment {
 
     @BindView(R.id.pieChart)
     public PieChart pieChart;
+    @BindView(R.id.transactionsRV)
+    public RecyclerView transactionsRV;
+    private TransactionsRVAdapter transactionsRVAdapter;
+    ArrayList<Transaction> transactions = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +48,9 @@ public class MonthFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         ButterKnife.bind(this, view);
+
+        transactions.addAll(getArguments().<Transaction>getParcelableArrayList("transactions"));
+        //Log.d("Fragment", "onCreateView: " + transactions.get(1).getCategory());
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);
@@ -60,6 +73,14 @@ public class MonthFragment extends Fragment {
         pieChart.setDrawEntryLabels(false);
 
         setData(4, 100);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext());
+        transactionsRV.setLayoutManager(layoutManager);
+        transactionsRV.setItemAnimator(new DefaultItemAnimator());
+        transactionsRV.setHasFixedSize(true);
+        transactionsRVAdapter = new TransactionsRVAdapter();
+        transactionsRV.setAdapter(transactionsRVAdapter);
+        transactionsRVAdapter.swapList(transactions);
 
         return view;
     }

@@ -35,6 +35,7 @@ import ai.chainproof.theqteam.knowyourbudget.R;
 import ai.chainproof.theqteam.knowyourbudget.adapters.SectionsPagerAdapter;
 import ai.chainproof.theqteam.knowyourbudget.data.TransactionContract;
 import ai.chainproof.theqteam.knowyourbudget.fragments.MonthFragment;
+import ai.chainproof.theqteam.knowyourbudget.model.Transaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(new MonthFragment(), "Current Month", new Bundle());
-        mSectionsPagerAdapter.addFragment(new MonthFragment(), "Previous Month", new Bundle());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         tabs.setupWithViewPager(mViewPager);
 
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NewTransactionActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 3);
             }
         });
 
@@ -152,16 +150,60 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        Bundle infoForFragment = new Bundle();
 
-        data.moveToFirst();
+        if(data.getCount()!=0){
 
-        Log.d("CATEGORY FROM DATABASE", "onLoadFinished: " + data.getString(data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_CATEGORY)));
+            int amountIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_AMOUNT);
+            int categoryIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_CATEGORY);
+            int dayIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_DAY);
+            int monthIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_MONTH);
+            int yearIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_YEAR);
+            int imageIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_IMAGE);
+            int notesIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_NOTES);
+
+            data.moveToFirst();
+            while (!data.isAfterLast()){
+                transactions.add(new Transaction(data.getString(imageIndex),
+                        data.getString(amountIndex),
+                        data.getString(categoryIndex),
+                        data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                        data.getString(notesIndex)));
+                data.moveToNext();
+            }
+
+            infoForFragment.putParcelableArrayList("transactions", transactions);
+            //Log.d("MainActivity", "onLoadFinished: " + transactions.get(1).getCategory());
+
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "January", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "February", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "March", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "April", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "May", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "June", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "Jule", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "August", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "September", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "October", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "November", infoForFragment);
+            mSectionsPagerAdapter.addFragment(new MonthFragment(), "December", infoForFragment);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        }
 
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {}
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 3){
+            getSupportLoaderManager().restartLoader(TRANSACTIONS_LOADER_ID, null,this);
+        }
     }
 
 }
