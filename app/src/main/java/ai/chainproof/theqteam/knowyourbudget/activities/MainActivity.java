@@ -3,6 +3,7 @@ package ai.chainproof.theqteam.knowyourbudget.activities;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Intent;
@@ -149,8 +150,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        Bundle infoForFragment = new Bundle();
+        ArrayList<Transaction> transactionsJan = new ArrayList<>();
+        ArrayList<Transaction> transactionsFeb = new ArrayList<>();
+        ArrayList<Transaction> transactionsMar = new ArrayList<>();
+        ArrayList<Transaction> transactionsApr = new ArrayList<>();
+        ArrayList<Transaction> transactionsMay = new ArrayList<>();
+        ArrayList<Transaction> transactionsJun = new ArrayList<>();
+        ArrayList<Transaction> transactionsJul = new ArrayList<>();
+        ArrayList<Transaction> transactionsAug = new ArrayList<>();
+        ArrayList<Transaction> transactionsSep = new ArrayList<>();
+        ArrayList<Transaction> transactionsOct = new ArrayList<>();
+        ArrayList<Transaction> transactionsNov = new ArrayList<>();
+        ArrayList<Transaction> transactionsDec = new ArrayList<>();
+        Bundle infoForFragmentJan = new Bundle();
+        Bundle infoForFragmentFeb = new Bundle();
+        Bundle infoForFragmentMar = new Bundle();
+        Bundle infoForFragmentApr = new Bundle();
+        Bundle infoForFragmentMay = new Bundle();
+        Bundle infoForFragmentJun = new Bundle();
+        Bundle infoForFragmentJul = new Bundle();
+        Bundle infoForFragmentAug = new Bundle();
+        Bundle infoForFragmentSep = new Bundle();
+        Bundle infoForFragmentOct = new Bundle();
+        Bundle infoForFragmentNov = new Bundle();
+        Bundle infoForFragmentDec = new Bundle();
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -167,32 +190,137 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             data.moveToFirst();
             while (!data.isAfterLast()){
-                transactions.add(new Transaction(data.getInt(idIndex),
-                        data.getString(imageIndex),
-                        data.getString(amountIndex),
-                        data.getString(categoryIndex),
-                        data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
-                        data.getString(notesIndex)));
+                switch (data.getString(monthIndex)){
+                    case "01":
+                        transactionsJan.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "02":
+                        transactionsFeb.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "03":
+                        transactionsMar.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "04":
+                        transactionsApr.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "05":
+                        transactionsMay.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "06":
+                        transactionsJun.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "07":
+                        transactionsJul.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "08":
+                        transactionsAug.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "09":
+                        transactionsSep.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "10":
+                        transactionsOct.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "11":
+                        transactionsNov.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    case "12":
+                        transactionsDec.add(new Transaction(data.getInt(idIndex),
+                                data.getString(imageIndex),
+                                data.getString(amountIndex),
+                                data.getString(categoryIndex),
+                                data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
+                                data.getString(notesIndex)));
+                        break;
+                    default:
+                        break;
+                }
                 data.moveToNext();
             }
 
-            infoForFragment.putParcelableArrayList("transactions", transactions);
-
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "January", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "February", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "March", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "April", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "May", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "June", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "Jule", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "August", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "September", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "October", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "November", infoForFragment);
-            mSectionsPagerAdapter.addFragment(new MonthFragment(), "December", infoForFragment);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-
         }
+
+        infoForFragmentJan.putParcelableArrayList("transactions", transactionsJan);
+        infoForFragmentFeb.putParcelableArrayList("transactions", transactionsFeb);
+        infoForFragmentMar.putParcelableArrayList("transactions", transactionsMar);
+        infoForFragmentApr.putParcelableArrayList("transactions", transactionsApr);
+        infoForFragmentMay.putParcelableArrayList("transactions", transactionsMay);
+        infoForFragmentJun.putParcelableArrayList("transactions", transactionsJun);
+        infoForFragmentJul.putParcelableArrayList("transactions", transactionsJul);
+        infoForFragmentAug.putParcelableArrayList("transactions", transactionsAug);
+        infoForFragmentSep.putParcelableArrayList("transactions", transactionsSep);
+        infoForFragmentOct.putParcelableArrayList("transactions", transactionsOct);
+        infoForFragmentNov.putParcelableArrayList("transactions", transactionsNov);
+        infoForFragmentDec.putParcelableArrayList("transactions", transactionsDec);
+
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "January", infoForFragmentJan);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "February", infoForFragmentFeb);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "March", infoForFragmentMar);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "April", infoForFragmentApr);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "May", infoForFragmentMay);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "June", infoForFragmentJun);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "Jule", infoForFragmentJul);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "August", infoForFragmentAug);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "September", infoForFragmentSep);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "October", infoForFragmentOct);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "November", infoForFragmentNov);
+        mSectionsPagerAdapter.addFragment(new MonthFragment(), "December", infoForFragmentDec);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
     }
 

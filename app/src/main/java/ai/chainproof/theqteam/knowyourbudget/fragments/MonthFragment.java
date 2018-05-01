@@ -52,9 +52,12 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
 
         ButterKnife.bind(this, view);
 
-        transactions.clear();
-        transactions.addAll(getArguments().<Transaction>getParcelableArrayList("transactions"));
-        //Log.d("Fragment", "onCreateView: " + transactions.get(1).getCategory());
+        ArrayList<Transaction> args = getArguments().getParcelableArrayList("transactions");
+
+        if(args!=null){
+            transactions.clear();
+            transactions.addAll(args);
+        }
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);

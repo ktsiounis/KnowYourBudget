@@ -36,7 +36,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
+        // Show total pages.
         return mFragmentList.size();
     }
 
