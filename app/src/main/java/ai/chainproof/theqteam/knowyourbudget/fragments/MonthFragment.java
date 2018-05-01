@@ -44,7 +44,6 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
     public RecyclerView transactionsRV;
     private TransactionsRVAdapter transactionsRVAdapter;
     ArrayList<Transaction> transactions = new ArrayList<>();
-    private static final int TRANSACTIONS_LOADER_ID = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
