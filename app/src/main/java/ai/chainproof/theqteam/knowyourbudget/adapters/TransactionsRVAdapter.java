@@ -3,6 +3,7 @@ package ai.chainproof.theqteam.knowyourbudget.adapters;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,12 @@ import butterknife.ButterKnife;
  */
 public class TransactionsRVAdapter extends RecyclerView.Adapter<TransactionsRVAdapter.TransactionViewHolder> {
 
-    ArrayList<Transaction> transactions;
+    private ArrayList<Transaction> transactions;
+    private ItemClickListener mListener;
+
+    public TransactionsRVAdapter(ItemClickListener mListener) {
+        this.mListener = mListener;
+    }
 
     @NonNull
     @Override
@@ -32,7 +38,7 @@ public class TransactionsRVAdapter extends RecyclerView.Adapter<TransactionsRVAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TransactionViewHolder holder, final int position) {
         holder.amountTV.setText(transactions.get(position).getAmount() + "€");
         holder.categoryTV.setText(transactions.get(position).getCategory());
         holder.dateTV.setText(transactions.get(position).getDate());
@@ -46,6 +52,13 @@ public class TransactionsRVAdapter extends RecyclerView.Adapter<TransactionsRVAd
             holder.signTV.setTextColor(Color.RED);
             holder.amountTV.setTextColor(Color.RED);
         }
+
+        holder.amountTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onItemClickListener(position);
+            }
+        });
     }
 
     @Override
@@ -54,7 +67,7 @@ public class TransactionsRVAdapter extends RecyclerView.Adapter<TransactionsRVAd
         else return transactions.size();
     }
 
-    public class TransactionViewHolder extends RecyclerView.ViewHolder{
+    public class TransactionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.amountTV) public TextView amountTV;
         @BindView(R.id.signTV) public TextView signTV;
@@ -65,6 +78,17 @@ public class TransactionsRVAdapter extends RecyclerView.Adapter<TransactionsRVAd
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+        @Override
+        public void onClick(View view) {
+            Log.d("Adapter", "onClick: item clicked");
+            int position = getLayoutPosition();
+            mListener.onItemClickListener(position);
+        }
+    }
+
+    public interface ItemClickListener{
+        void onItemClickListener(int position);
     }
 
     public void swapList(ArrayList<Transaction> mTransactions){

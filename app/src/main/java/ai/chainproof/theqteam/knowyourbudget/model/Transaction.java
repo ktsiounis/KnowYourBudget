@@ -8,13 +8,15 @@ import android.os.Parcelable;
  */
 public class Transaction implements Parcelable {
 
+    private int id;
     private String imagePath;
     private String amount;
     private String category;
     private String date;
     private String notes;
 
-    public Transaction(String imagePath, String amount, String category, String date, String notes) {
+    public Transaction(int id, String imagePath, String amount, String category, String date, String notes) {
+        this.id = id;
         this.imagePath = imagePath;
         this.amount = amount;
         this.category = category;
@@ -23,6 +25,7 @@ public class Transaction implements Parcelable {
     }
 
     public Transaction (Parcel parcel){
+        this.id = parcel.readInt();
         this.imagePath = parcel.readString();
         this.amount = parcel.readString();
         this.category = parcel.readString();
@@ -32,6 +35,7 @@ public class Transaction implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(imagePath);
         dest.writeString(amount);
         dest.writeString(category);
@@ -89,6 +93,14 @@ public class Transaction implements Parcelable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

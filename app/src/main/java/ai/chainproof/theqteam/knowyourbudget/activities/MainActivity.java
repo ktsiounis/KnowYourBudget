@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
 import ai.chainproof.theqteam.knowyourbudget.adapters.SectionsPagerAdapter;
+import ai.chainproof.theqteam.knowyourbudget.adapters.TransactionsRVAdapter;
 import ai.chainproof.theqteam.knowyourbudget.data.TransactionContract;
 import ai.chainproof.theqteam.knowyourbudget.fragments.MonthFragment;
 import ai.chainproof.theqteam.knowyourbudget.model.Transaction;
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if(data.getCount()!=0){
 
+            int idIndex = data.getColumnIndex(TransactionContract.TransactionsEntry._ID);
             int amountIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_AMOUNT);
             int categoryIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_CATEGORY);
             int dayIndex = data.getColumnIndex(TransactionContract.TransactionsEntry.COLUMN_DAY);
@@ -165,7 +167,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             data.moveToFirst();
             while (!data.isAfterLast()){
-                transactions.add(new Transaction(data.getString(imageIndex),
+                transactions.add(new Transaction(data.getInt(idIndex),
+                        data.getString(imageIndex),
                         data.getString(amountIndex),
                         data.getString(categoryIndex),
                         data.getString(dayIndex)+"/"+data.getString(monthIndex)+"/"+data.getString(yearIndex),
@@ -174,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             infoForFragment.putParcelableArrayList("transactions", transactions);
-            //Log.d("MainActivity", "onLoadFinished: " + transactions.get(1).getCategory());
 
             mSectionsPagerAdapter.addFragment(new MonthFragment(), "January", infoForFragment);
             mSectionsPagerAdapter.addFragment(new MonthFragment(), "February", infoForFragment);
@@ -205,5 +207,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             getSupportLoaderManager().restartLoader(TRANSACTIONS_LOADER_ID, null,this);
         }
     }
-
 }

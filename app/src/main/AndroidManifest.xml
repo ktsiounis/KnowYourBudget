@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ai.chainproof.theqteam.knowyourbudget">
-    
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="true"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,8 +28,8 @@
         </activity>
         <activity
             android:name=".activities.NewTransactionActivity"
-            android:parentActivityName=".activities.MainActivity">
-        </activity>
+            android:parentActivityName=".activities.MainActivity"></activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -35,13 +37,15 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths">
-            </meta-data>
+                android:resource="@xml/paths"/>
         </provider>
         <provider
-            android:authorities="ai.chainproof.theqteam.knowyourbudget"
             android:name=".data.TransactionProvider"
-            android:exported="false"/>
+            android:authorities="ai.chainproof.theqteam.knowyourbudget"
+            android:exported="false" />
+
+        <activity android:name=".activities.ShowTransactionActivity"
+                  android:parentActivityName=".activities.MainActivity"/>
     </application>
 
 </manifest>

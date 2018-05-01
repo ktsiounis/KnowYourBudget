@@ -50,6 +50,8 @@ public class NewTransactionActivity extends AppCompatActivity {
     public TextView dateTextView;
     @BindView(R.id.notesEditText)
     public EditText notesEditText;
+    @BindView(R.id.promptTV)
+    public TextView promptTV;
 
     Calendar myCalendar;
 
@@ -140,6 +142,7 @@ public class NewTransactionActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            promptTV.setVisibility(View.INVISIBLE);
             File image = new File(mCurrentPhotoPath);
             Picasso.with(this)
                     .load(Uri.fromFile(image))

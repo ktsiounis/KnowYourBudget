@@ -1,5 +1,6 @@
 package ai.chainproof.theqteam.knowyourbudget.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import java.util.ArrayList;
 
 import ai.chainproof.theqteam.knowyourbudget.R;
+import ai.chainproof.theqteam.knowyourbudget.activities.MainActivity;
+import ai.chainproof.theqteam.knowyourbudget.activities.ShowTransactionActivity;
 import ai.chainproof.theqteam.knowyourbudget.adapters.TransactionsRVAdapter;
 import ai.chainproof.theqteam.knowyourbudget.model.Transaction;
 import butterknife.BindView;
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Konstantinos Tsiounis on 23-Apr-18.
  */
-public class MonthFragment extends Fragment {
+public class MonthFragment extends Fragment implements TransactionsRVAdapter.ItemClickListener {
 
     @BindView(R.id.pieChart)
     public PieChart pieChart;
@@ -41,6 +44,7 @@ public class MonthFragment extends Fragment {
     public RecyclerView transactionsRV;
     private TransactionsRVAdapter transactionsRVAdapter;
     ArrayList<Transaction> transactions = new ArrayList<>();
+    private static final int TRANSACTIONS_LOADER_ID = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -79,7 +83,7 @@ public class MonthFragment extends Fragment {
         transactionsRV.setLayoutManager(layoutManager);
         transactionsRV.setItemAnimator(new DefaultItemAnimator());
         transactionsRV.setHasFixedSize(true);
-        transactionsRVAdapter = new TransactionsRVAdapter();
+        transactionsRVAdapter = new TransactionsRVAdapter(this);
         transactionsRV.setAdapter(transactionsRVAdapter);
         transactionsRVAdapter.swapList(transactions);
 
@@ -139,5 +143,13 @@ public class MonthFragment extends Fragment {
         pieChart.highlightValues(null);
 
         pieChart.invalidate();
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        Log.d("MonthFragment", "onItemClickListener: Item clicked " + position + " " + transactions.get(position).getAmount());
+        Intent intent = new Intent(getActivity().getApplicationContext(), ShowTransactionActivity.class);
+        intent.putExtra("transaction", transactions.get(position));
+        getActivity().startActivityForResult(intent, 3);
     }
 }
