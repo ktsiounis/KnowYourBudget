@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_refresh) {
+            getSupportLoaderManager().restartLoader(TRANSACTIONS_LOADER_ID, null,this);
         }
 
         return super.onOptionsItemSelected(item);

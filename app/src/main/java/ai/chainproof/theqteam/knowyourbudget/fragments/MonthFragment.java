@@ -44,6 +44,15 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
     public RecyclerView transactionsRV;
     private TransactionsRVAdapter transactionsRVAdapter;
     ArrayList<Transaction> transactions = new ArrayList<>();
+    private float incomes = 0;
+    private float shoppings = 0;
+    private float entertainmets = 0;
+    private float foods = 0;
+    private float fuels = 0;
+    private float rents = 0;
+    private float utilities = 0;
+    private float transports = 0;
+    private float others = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +67,8 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
             transactions.clear();
             transactions.addAll(args);
         }
+
+        categorizeData(transactions);
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);
@@ -79,7 +90,7 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
         pieChart.setEntryLabelTextSize(12f);
         pieChart.setDrawEntryLabels(false);
 
-        setData(4, 100);
+        setData(8, incomes);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         transactionsRV.setLayoutManager(layoutManager);
@@ -95,12 +106,80 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
     public void setData(int count, float range){
         float mult = range;
 
+        Log.d("MonthFragment", "setData: " + range);
+
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((mult / 4), "Shopping", i));
+            switch (i) {
+                case 1: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((shoppings / range), "Shopping", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Shopping", i));
+                    }
+                    break;
+                }
+                case 2: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((entertainmets / range), "Entertainment", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Entertainment", i));
+                    }
+                    break;
+                }
+                case 3: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((foods / range), "Food", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Food", i));
+                    }
+                    break;
+                }
+                case 4: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((fuels / range), "Fuel", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Fuel", i));
+                    }
+                    break;
+                }
+                case 5: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((rents / range), "Rent", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Rent", i));
+                    }
+                    break;
+                }
+                case 6: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((utilities / range), "Utilities", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Utilities", i));
+                    }
+                    break;
+                }
+                case 7: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((transports / range), "Transport", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Transport", i));
+                    }
+                    break;
+                }
+                default: {
+                    if (range != 0) {
+                        entries.add(new PieEntry((others / range), "Other Expense", i));
+                    } else {
+                        entries.add(new PieEntry((100 / count), "Other Expense", i));
+                    }
+                    break;
+                }
+            }
+
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Expenses");
@@ -144,6 +223,8 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
         // undo all highlights
         pieChart.highlightValues(null);
 
+        pieChart.notifyDataSetChanged();
+
         pieChart.invalidate();
     }
 
@@ -153,5 +234,53 @@ public class MonthFragment extends Fragment implements TransactionsRVAdapter.Ite
         Intent intent = new Intent(getActivity().getApplicationContext(), ShowTransactionActivity.class);
         intent.putExtra("transaction", transactions.get(position));
         getActivity().startActivityForResult(intent, 3);
+    }
+
+    private void categorizeData(ArrayList<Transaction> transactions) {
+
+        incomes = 0;
+        shoppings = 0;
+        entertainmets = 0;
+        foods = 0;
+        fuels = 0;
+        rents = 0;
+        utilities = 0;
+        transports = 0;
+        others = 0;
+
+        for (int i = 0; i < transactions.size(); i++) {
+            switch (transactions.get(i).getCategory()) {
+                case "Salary" :
+                    incomes += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Other Income" :
+                    incomes += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Shopping" :
+                    shoppings += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Entertainment" :
+                    entertainmets += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Food" :
+                    foods += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Fuel" :
+                    fuels += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Rent" :
+                    rents += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Utilities" :
+                    utilities += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                case "Transport" :
+                    transports += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+                default:
+                    others += Float.parseFloat(transactions.get(i).getAmount());
+                    break;
+            }
+        }
     }
 }
